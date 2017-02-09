@@ -5,8 +5,6 @@ import java.util.List;
  * Created by rickjackson on 2/9/17.
  */
 public class Engine {
-    private Reader reader;
-    private Output output;
     private ItemList itemList;
     private Regex regex;
     private List<String> checks;
@@ -71,7 +69,7 @@ public class Engine {
             // Check name value
             if (this.regex.isMatch(file, regex)) {
                 item = this.regex.getNextValue(file, index);
-                index += regex.length();
+                index += item.length();
                 file = file.substring(index);
                 index = 0;
             } else {
@@ -119,14 +117,13 @@ public class Engine {
                 file = file.substring(index);
                 index = 0;
             }
-            regex = this.regex.getValuePattern(
-                    this.regex.getNextValue(file, index));
+            regex = this.regex.getPricePattern();
     
             // Check price value
             if (this.regex.isMatch(file, regex)) {
                 price = Double.valueOf(file.substring(index,
                         this.regex.nextDeliminatorIndex(file)));
-                index += regex.length();
+                index += Double.toString(price).length();
                 file = file.substring(index);
                 index = 0;
             } else {
@@ -183,7 +180,7 @@ public class Engine {
     
             // Check food value
             if (this.regex.isMatch(file, regex)) {
-                index += regex.length();
+                index += "Food".length();
                 file = file.substring(index);
                 index = 0;
             } else {
@@ -209,7 +206,7 @@ public class Engine {
     
             // Check expiration key
             if (this.regex.isMatch(file, regex)) {
-                index += regex.length();
+                index += "Expiration".length();
                 file = file.substring(index);
                 index = 0;
             } else {
@@ -236,7 +233,7 @@ public class Engine {
     
             // Check expiration value
             if (this.regex.isMatch(file, regex)) {
-                index += regex.length();
+                index += this.regex.nextSeparatorIndex(file);
                 file = file.substring(index);
                 index = 0;
             } else {
@@ -258,6 +255,7 @@ public class Engine {
                 price = -1.00;
                 this.check = 1;
             }
+            System.out.println(index);
         }
     }
     

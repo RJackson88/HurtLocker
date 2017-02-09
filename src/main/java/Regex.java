@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 public class Regex {
     public Map<String, String> keyPatterns;
     public Map<String, String> valuePatterns;
+    public Map<String, String> pricePatterns;
     
     public Regex() {
         constructPatterns();
@@ -17,9 +18,10 @@ public class Regex {
     public void constructPatterns() {
         this.keyPatterns = new HashMap<String, String>();
         this.valuePatterns = new HashMap<String, String>();
-        this.keyPatterns.put("KeyValuePairDelim", "[#]{2}");
+        this.pricePatterns = new HashMap<String, String>();
+        this.keyPatterns.put("KeyValuePairDelim", "([#]{2})");
         this.keyPatterns.put("KeyValueDelim", "[:;@^*%]{1}");
-        this.keyPatterns.put("Name", "[nameNAME]{4}");
+        this.keyPatterns.put("Name", "([nameNAME]){4}");
         this.keyPatterns.put("Price", "[pricePRICE1]{5}");
         this.keyPatterns.put("Type", "[typeTYPE]{4}");
         this.keyPatterns.put("Expiration", "[expirationEXPIRATION01]{10}");
@@ -32,6 +34,7 @@ public class Regex {
         this.valuePatterns.put("Bread", "[breadBREAD]{5}");
         this.valuePatterns.put("Cookies", "[cookiesCOOKIES0$]{7}");
         this.valuePatterns.put("Apples", "[applesAPPLES$]{6}");
+        this.pricePatterns.put("Prices", "([0-9])[.]([0-9]{2})");
     }
     
     public String getKeyPattern(String key) {
@@ -42,6 +45,10 @@ public class Regex {
         return this.valuePatterns.get(key);
     }
     
+    public String getPricePattern() {
+        return this.pricePatterns.get("Prices");
+    }
+    
     public Matcher getMatcher(String input, String regex) {
         Pattern p = Pattern.compile(regex);
         return p.matcher(input);
@@ -50,7 +57,8 @@ public class Regex {
     public boolean isMatch(String input, String regex) {
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(input);
-        return m.matches();
+        
+        return m.find();
     }
     
     public boolean isNotError(String input) {

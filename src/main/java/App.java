@@ -5,10 +5,13 @@ public class App {
     
     public static void main(String[] args) {
         Main main = new Main();
+        Engine engine = new Engine();
+        Reader reader = new Reader();
         Output out = new Output();
         
         try {
-            out.printToScreen(main.readRawDataToString());
+            engine.run(main.readRawDataToString());
+            out.printToScreen();
         } catch (Exception e) {
             e.printStackTrace();
         }

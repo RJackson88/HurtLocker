@@ -12,6 +12,7 @@ public class Main {
     public static void main(String[] args) throws Exception{
         String output = (new Main()).readRawDataToString();
         System.out.println(output);
-
+        Output out = new Output();
+        out.printToScreen(output);
     }
 }

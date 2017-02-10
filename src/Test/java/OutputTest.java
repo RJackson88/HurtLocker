@@ -8,10 +8,13 @@ import static org.junit.Assert.assertEquals;
  */
 public class OutputTest {
     private Output out;
+    private ItemList itemList;
     
     @Before
     public void setup() {
-        out = new Output();
+        itemList = new ItemList();
+        out = new Output(itemList.prices, itemList.frequencies,
+                itemList.getErrorsSeen());
     }
     
     @Test

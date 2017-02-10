@@ -7,6 +7,7 @@ import java.util.List;
 public class Engine {
     private ItemList itemList;
     private Regex regex;
+    private Output output;
     private List<String> checks;
     private Integer check;
     private Integer previousCheck;
@@ -34,6 +35,7 @@ public class Engine {
         String regex = "";
         String item = "";
         Double price = 0.00;
+        String holder = "";
         
         while (this.check != 5) {
             file = file.substring(index);
@@ -59,7 +61,7 @@ public class Engine {
                 index = 0;
             } else {
                 this.itemList.incrementErrors();
-                index++;
+//                index++;
                 file = file.substring(index);
                 index = 0;
             }
@@ -74,7 +76,7 @@ public class Engine {
                 index = 0;
             } else {
                 this.itemList.incrementErrors();
-                index++;
+                index = this.regex.nextDeliminatorIndex(file);
                 file = file.substring(index);
                 index = 0;
             }
@@ -113,22 +115,29 @@ public class Engine {
                 index = 0;
             } else {
                 this.itemList.incrementErrors();
-                index++;
+//                index++;
                 file = file.substring(index);
                 index = 0;
             }
             regex = this.regex.getPricePattern();
     
             // Check price value
-            if (this.regex.isMatch(file, regex)) {
-                price = Double.valueOf(file.substring(index,
-                        this.regex.nextDeliminatorIndex(file)));
+            if (this.regex.isMatch(file, regex) &&
+                    !item.equals("Error")) {
+                holder = file.substring(index, this.regex
+                        .nextDeliminatorIndex(file));
+                try {
+                    price = Double.valueOf(holder);
+                } catch (NumberFormatException nfe) {
+                    price = -1.00;
+                    this.itemList.incrementErrors();
+                }
                 index += Double.toString(price).length();
                 file = file.substring(index);
                 index = 0;
             } else {
                 this.itemList.incrementErrors();
-                index++;
+                index = this.regex.nextDeliminatorIndex(file);
                 file = file.substring(index);
                 index = 0;
             }
@@ -185,7 +194,7 @@ public class Engine {
                 index = 0;
             } else {
                 this.itemList.incrementErrors();
-                index++;
+                index = this.regex.nextDeliminatorIndex(file);
                 file = file.substring(index);
                 index = 0;
             }
@@ -211,7 +220,7 @@ public class Engine {
                 index = 0;
             } else {
                 this.itemList.incrementErrors();
-                index++;
+                index = this.regex.nextDeliminatorIndex(file);
                 file = file.substring(index);
                 index = 0;
             }
@@ -238,7 +247,7 @@ public class Engine {
                 index = 0;
             } else {
                 this.itemList.incrementErrors();
-                index++;
+                index = this.regex.nextSeparatorIndex(file);
                 file = file.substring(index);
                 index = 0;
             }
@@ -255,8 +264,10 @@ public class Engine {
                 price = -1.00;
                 this.check = 1;
             }
-            System.out.println(index);
         }
+        this.output = new Output(this.itemList.prices,
+                this.itemList.frequencies, this.itemList.getErrorsSeen());
+        output.printToScreen();
     }
     
     public void switchCheck() {

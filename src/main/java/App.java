@@ -7,11 +7,10 @@ public class App {
         Main main = new Main();
         Engine engine = new Engine();
         Reader reader = new Reader();
-        Output out = new Output();
+//        Output out = new Output();
         
         try {
             engine.run(main.readRawDataToString());
-            out.printToScreen();
         } catch (Exception e) {
             e.printStackTrace();
         }

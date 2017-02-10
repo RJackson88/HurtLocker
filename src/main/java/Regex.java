@@ -34,7 +34,7 @@ public class Regex {
         this.valuePatterns.put("Bread", "[breadBREAD]{5}");
         this.valuePatterns.put("Cookies", "[cookiesCOOKIES0$]{7}");
         this.valuePatterns.put("Apples", "[applesAPPLES$]{6}");
-        this.pricePatterns.put("Prices", "([0-9])[.]([0-9]{2})");
+        this.pricePatterns.put("Prices", "([0-9]{1})([.]{1})([0-9]{2})");
     }
     
     public String getKeyPattern(String key) {
